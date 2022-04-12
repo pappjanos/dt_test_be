@@ -1,5 +1,6 @@
 const morgan = require("morgan");
 const os = require("os");
+const config = require("../config/config");
 
 morgan.token("hostname", function getHostname() {
   return os.hostname();
@@ -8,6 +9,7 @@ morgan.token("pid", function getPid() {
   return process.pid;
 });
 
+// construct log entry
 function jsonFormat(tokens, req, res) {
   return JSON.stringify({
     "remote-address": tokens["remote-addr"](req, res),
@@ -24,11 +26,12 @@ function jsonFormat(tokens, req, res) {
   });
 }
 
+// logger for test and development modes
 const loggerMiddlerware = function logger() {
   return morgan(jsonFormat);
 };
 
+// use no logger for any other modes (prod)
 const skippedLogger = () => (req, res, next) => next();
 
-module.exports =
-  process.env.NODE_ENV !== "test" ? loggerMiddlerware : skippedLogger;
+module.exports = config.env !== "test" ? loggerMiddlerware : skippedLogger;

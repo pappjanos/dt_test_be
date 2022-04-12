@@ -3,6 +3,7 @@ const cocktailRoute = require("./cocktail.route");
 
 const router = express.Router();
 
+// define server routes
 const defaultRoutes = [
   {
     path: "/cocktail",

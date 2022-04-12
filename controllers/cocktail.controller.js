@@ -1,4 +1,19 @@
-const getCocktails = async (req, res) => {};
+const cocktailService = require("../services/cocktail.service");
+
+// get cocktails from cocktail api based on query params if available in the request
+const getCocktails = async (req, res) => {
+  const { name, isAlcoholic } = req.query;
+  // in case the query parameter contains name, then we search for the corresponding cocktail name and provide an array og object of cocktails
+  let result;
+  if (name) {
+    result = await cocktailService.searchCocktailByName(name);
+  }
+  // else we just give back a random cocktail object
+  else {
+    result = await cocktailService.getRandomCocktail();
+  }
+  return res.status(200).json(result.data);
+};
 
 module.exports = {
   getCocktails,

@@ -1,4 +1,5 @@
 const express = require("express");
+const config = require("./config/config");
 
 //middlewares
 const helmet = require("helmet");
@@ -26,7 +27,7 @@ app.use(logger());
 // v1 api routes
 app.use("/api", routes);
 
-const PORT = process.env.PORT || 1111;
+const PORT = config.port || 1111;
 app.listen(PORT, () => {
   console.log(`Server started at ${PORT}`);
 });

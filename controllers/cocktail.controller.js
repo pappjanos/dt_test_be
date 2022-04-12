@@ -6,13 +6,22 @@ const getCocktails = async (req, res) => {
   // in case the query parameter contains name, then we search for the corresponding cocktail name and provide an array og object of cocktails
   let result;
   if (name) {
-    result = await cocktailService.searchCocktailByName(name);
+    try {
+      result = await cocktailService.searchCocktailByName(name);
+      return res.status(200).json(result.data);
+    } catch (error) {
+      return res.sendStatus(error);
+    }
   }
   // else we just give back a random cocktail object
   else {
-    result = await cocktailService.getRandomCocktail();
+    try {
+      result = await cocktailService.getRandomCocktail();
+      return res.status(200).json(result.data);
+    } catch (error) {
+      return res.sendStatus(error);
+    }
   }
-  return res.status(200).json(result.data);
 };
 
 module.exports = {
